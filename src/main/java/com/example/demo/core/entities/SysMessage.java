@@ -1,38 +1,49 @@
 package com.example.demo.core.entities;
 
 
+import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.Map;
 
-@Setter
+
+@SuperBuilder
+@NoArgsConstructor
 @Getter
+@Setter
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "sys_message")
 public class SysMessage extends CoreEntity {
     @Column(name = "message_seq", length = Integer.MAX_VALUE)
-    private String messageSeq;
+    String messageSeq;
 
     @Column(name = "message_code", nullable = false, length = Integer.MAX_VALUE)
-    private String messageCode;
+    String messageCode;
 
     @Column(name = "translations", nullable = false)
     @JdbcTypeCode(SqlTypes.JSON)
-    private Map<String, Object> translations;
+    Map<String, String> translations;
 
     @ColumnDefault("200")
     @Column(name = "status_code", nullable = false)
-    private Integer statusCode;
+    Integer statusCode;
+
 
     @Override
-    public String getPrefixNoCode() {
-        return "MSG";
+    public SysDatasourceNoCode getPrefixNoCode() {
+        return SysDatasourceNoCode.SYS_MESSAGE;
     }
+
 }

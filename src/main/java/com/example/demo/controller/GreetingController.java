@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.core.constants.HttpStatusMessage;
 import com.example.demo.core.entities.SysMessage;
+import com.example.demo.core.exception.BusinessException;
 import com.example.demo.core.i18n.MessageService;
 import com.example.demo.core.i18n.messages.MessageI18n;
 import com.example.demo.core.repositories.SysMessageRepository;
@@ -41,7 +43,6 @@ public class GreetingController {
 
     @GetMapping("/create-message")
     public SysMessage createMessage() {
-
         SysMessage sysMessage = new SysMessage();
         sysMessage.setMessageCode("test");
         sysMessage.setMessageSeq("test");
@@ -57,8 +58,15 @@ public class GreetingController {
 
     @DeleteMapping("/message/{id}")
     public SysMessage deleteMessage(@PathVariable() UUID id) {
-        var message = sysMessageRepository.findById(id)
-                .orElseThrow();
+        var message = sysMessageRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> BusinessException
+                                .builder()
+                                .statusMessage(HttpStatusMessage.DATA_NOT_FOUND)
+                                .parameters(Map.of("fields", "id:" + id))
+                                .build()
+                );
         sysMessageRepository.delete(message);
         return message;
     }

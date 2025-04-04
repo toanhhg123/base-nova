@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 @Primary
-public class InMemoryMessageCache implements MessageCacheService  {
+public class InMemoryMessageCache implements MessageCacheService {
     private final Map<String, SysMessage> messageCodeCache = new ConcurrentHashMap<>();
     private final SysMessageRepository repository;
 
@@ -62,7 +62,7 @@ public class InMemoryMessageCache implements MessageCacheService  {
     public void refreshCache() {
         List<SysMessage> messages = repository.findAll();
         messageCodeCache.clear();
-
         messages.forEach(msg -> messageCodeCache.put(msg.getMessageCode(), msg));
     }
+
 }

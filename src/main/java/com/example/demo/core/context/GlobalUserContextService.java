@@ -1,17 +1,23 @@
 package com.example.demo.core.context;
 
 import com.example.demo.core.security.user.UserDetailsImpl;
+import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Setter
 @Service
-@RequestScope
 public class GlobalUserContextService {
 
+    /**
+     * -- SETTER --
+     *  Explicitly set the current user ID for this request/context
+     *
+     * @param userId User ID to set
+     */
     private UUID currentUserId;
 
     /**
@@ -28,15 +34,6 @@ public class GlobalUserContextService {
         // Otherwise get from Spring Security context
         return getCurrentUserIdFromSecurity()
                 .orElse(null);
-    }
-
-    /**
-     * Explicitly set the current user ID for this request/context
-     *
-     * @param userId User ID to set
-     */
-    public void setCurrentUserId(UUID userId) {
-        this.currentUserId = userId;
     }
 
     /**

@@ -31,16 +31,11 @@ public class LoggerOpenTelemetry implements Filter {
         Span span = Span.current();
         String requestBody = requestWrapper.getBody();
         span.setAttribute(REQUEST_BODY, requestBody);
-        log.info("http.request.body: {}, {}", requestBody, span.getSpanContext().isValid());
-
 
         chain.doFilter(requestWrapper, responseWrapper);
 
-
         String responseBody = responseWrapper.getResponseBody();
         span.setAttribute(RESPONSE_BODY, responseBody);
-        log.info("http.response.body: {}", responseBody);
-
 
         response.getOutputStream().write(responseBody.getBytes(StandardCharsets.UTF_8));
         response.getOutputStream().flush();

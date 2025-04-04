@@ -1,6 +1,7 @@
-package com.example.demo.core.entities;
+package com.example.demo.core.entities.event;
 
 import com.example.demo.core.context.GlobalUserContextService;
+import com.example.demo.core.entities.CoreEntity;
 import com.example.demo.core.utils.CodeGenerationUtils;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
@@ -45,7 +46,7 @@ public class CoreEntityListener {
         entity.setLastModifiedDate(new Date());
 
         // Add no code
-        var noCode = entity.getPrefixNoCode();
+        var noCode = entity.getPrefixNoCode().prefixNoCode;
         entity.setNoCode(CodeGenerationUtils.genCodeWithTime(noCode));
 
         // Retrieve the current user's ID from the user context service

@@ -1,51 +1,55 @@
 spring:
   application:
-    name: demo
+    name: demo  # Tên ứng dụng Spring Boot
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/spring
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8082/realms/spring  # Địa chỉ của máy chủ xác thực OAuth2 (Keycloak)
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs  # URL để lấy khóa công khai JWT từ máy chủ OAuth2
+
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: root
-    password: root
+    driver-class-name: org.postgresql.Driver  # Driver JDBC cho PostgreSQL
+    url: jdbc:postgresql://localhost:5432/postgres  # Đường dẫn kết nối tới cơ sở dữ liệu PostgreSQL
+    username: root  # Tên người dùng database
+    password: root  # Mật khẩu database
     hikari:
-      schema: votes
+      schema: votes  # Lược đồ (schema) sử dụng trong cơ sở dữ liệu
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: none  # Không tự động cập nhật hoặc tạo bảng
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect  # Cấu hình dialect Hibernate cho PostgreSQL
+        format_sql: true  # Hiển thị SQL theo định dạng dễ đọc
+    show-sql: true  # Hiển thị các câu lệnh SQL trong logs
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE  # Chuyển đổi tên thuộc tính trong JSON sang định dạng snake_case
 
 otel:
   traces:
-    exporter: console
+    exporter: none  # Tắt xuất traces (dữ liệu theo dõi)
   metrics:
-    exporter: none
+    exporter: none  # Xuất metric ra console
   logs:
-    exporter: none
+    exporter: none  # Tắt xuất logs
   service:
-    name: demo
+    name: demo  # Tên dịch vụ trong OpenTelemetry
+
 #  exporter:
 #    otlp:
-#      endpoint: http://localhost:4317
-#      protocol: grpc
+#      endpoint: http://localhost:4317  # Địa chỉ của OTLP (OpenTelemetry Protocol) Collector
+#      protocol: grpc  # Sử dụng giao thức gRPC để gửi dữ liệu theo dõi
 
 logging:
   level:
     org:
       springframework:
-        security: debug
-
+        security: debug  # Bật chế độ debug cho Spring Security để theo dõi quá trình xác thực
 
 app:
   jwt:
-    secret-key: "a153e3c2a906c71deafe6fbfcd44fd7d64f2328dcdb4678d1f624e2a78fee0a4"
+    secret-key: "a153e3c2a906c71deafe6fbfcd44fd7d64f2328dcdb4678d1f624e2a78fee0a4"  # Khóa bí mật dùng để ký JWT

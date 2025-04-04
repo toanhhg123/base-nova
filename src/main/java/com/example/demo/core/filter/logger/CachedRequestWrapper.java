@@ -14,7 +14,6 @@ public class CachedRequestWrapper extends HttpServletRequestWrapper {
 
     public CachedRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
-        // Đọc request body và lưu vào mảng byte
         cachedBody = request.getInputStream().readAllBytes();
     }
 
