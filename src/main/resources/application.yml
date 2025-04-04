@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: demo
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/spring
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: root
+    password: root
+    hikari:
+      schema: votes
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+
+otel:
+  traces:
+    exporter: console
+  metrics:
+    exporter: none
+  logs:
+    exporter: none
+  service:
+    name: demo
+#  exporter:
+#    otlp:
+#      endpoint: http://localhost:4317
+#      protocol: grpc
+
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
+
+
+app:
+  jwt:
+    secret-key: "a153e3c2a906c71deafe6fbfcd44fd7d64f2328dcdb4678d1f624e2a78fee0a4"

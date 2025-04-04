@@ -1,0 +1,47 @@
+receivers:
+  otlp:  # ✅ Định nghĩa OTLP receiver để nhận dữ liệu từ các ứng dụng
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317  # ✅ Lắng nghe gRPC trên cổng 4317
+      http:
+        endpoint: 0.0.0.0:4318  # ✅ Lắng nghe HTTP trên cổng 4318
+
+processors:
+  batch:  # ✅ Gộp nhiều sự kiện lại trước khi gửi đi để tối ưu hiệu suất
+  memory_limiter:  # ✅ Giới hạn bộ nhớ sử dụng để tránh tràn bộ nhớ
+    check_interval: 1s  # ✅ Kiểm tra bộ nhớ mỗi 1 giây
+    limit_percentage: 75  # ✅ Giới hạn bộ nhớ tối đa 75% tổng RAM
+    spike_limit_percentage: 25  # ✅ Giới hạn tăng đột biến lên tối đa 25%
+
+exporters:
+  debug:
+    verbosity: detailed  # ✅ Ghi log chi tiết để debug
+  otlp:
+    endpoint: "http://tempo:4317"  # ✅ Gửi traces đến Tempo bằng gRPC
+    tls:
+      insecure: true  # ✅ Không sử dụng TLS (dùng trong môi trường dev)
+#  otlp/jaeger:
+#    endpoint: jaeger:4317  # ✅ Gửi traces đến Jaeger qua gRPC
+#    tls:
+#      insecure: true  # ✅ Không sử dụng TLS
+  prometheus:
+    endpoint: "0.0.0.0:8889"  # ✅ Mở cổng cho Prometheus để lấy metrics
+  prometheusremotewrite:
+    endpoint: "http://prometheus:9090/api/v1/write" # ✅ Gửi metrics đến Prometheus server
+    tls:
+      insecure: true  # ✅ Không mã hóa TLS
+
+service:
+  pipelines:
+    traces:  # ✅ Pipeline xử lý trace (theo dõi yêu cầu)
+      receivers: [otlp]  # ✅ Nhận traces từ OTLP
+      processors: [memory_limiter, batch]  # ✅ Xử lý batch và giới hạn bộ nhớ
+      exporters: [debug, otlp]  # ✅ Xuất traces đến Jaeger, debug log, và Tempo
+    metrics:  # ✅ Pipeline xử lý metrics (chỉ số hiệu suất)
+      receivers: [otlp]  # ✅ Nhận metrics từ OTLP
+      processors: [memory_limiter, batch]  # ✅ Xử lý batch và giới hạn bộ nhớ
+      exporters: [prometheus, prometheusremotewrite]  # ✅ Xuất metrics đến Prometheus
+    logs:  # ✅ Pipeline xử lý logs (nhật ký hệ thống)
+      receivers: [otlp]  # ✅ Nhận logs từ OTLP
+      processors: [batch]  # ✅ Xử lý batch để tối ưu hiệu suất
+      exporters: [debug]  # ✅ Gửi logs đến collector qua gRPC

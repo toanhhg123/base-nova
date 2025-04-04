@@ -1,0 +1,50 @@
+auth_enabled: true  # Enable authentication to secure Loki
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+  log_level: info  # Reduce log level to lower CPU usage
+  cors:
+    allowed_origins: [ '*' ]
+
+ingester:
+  chunk_idle_period: 10m  # Close chunks after 10 minutes to optimize storage
+  chunk_retain_period: 5m  # Retain chunks in memory for 5 minutes
+  max_transfer_retries: 0  # No retries needed since it’s a single node
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: boltdb-shipper
+      object_store: filesystem  # Store logs locally on the server
+      schema: v11
+      index:
+        prefix: loki_index_
+        period: 24h  # Create index every 24 hours
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /var/lib/loki/index
+    cache_location: /var/lib/loki/cache
+    shared_store: filesystem
+  filesystem:
+    directory: /var/lib/loki/chunks  # Store logs on disk
+
+limits_config:
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h  # Accept logs only from the last 7 days
+  ingestion_rate_mb: 100  # Limit ingestion rate to prevent overload
+  ingestion_burst_size_mb: 200  # Limit burst rate
+
+chunk_store_config:
+  max_look_back_period: 168h  # Allow querying logs from the last 7 days
+
+table_manager:
+  retention_deletes_enabled: true
+  retention_period: 168h  # Automatically delete logs after 7 days
+
+query_range:
+  split_queries_by_interval: 10m  # Split queries to reduce CPU load
+
+frontend:
+  log_queries_longer_than: 5s  # Warn if queries take longer than 5 seconds
