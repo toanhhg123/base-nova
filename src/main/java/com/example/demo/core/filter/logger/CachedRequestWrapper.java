@@ -18,7 +18,7 @@ public class CachedRequestWrapper extends HttpServletRequestWrapper {
     }
 
     @Override
-    public ServletInputStream getInputStream() throws IOException {
+    public ServletInputStream getInputStream() {
         var byteArrayInputStream = new ByteArrayInputStream(cachedBody);
         return new ServletInputStream() {
             @Override

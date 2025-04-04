@@ -14,9 +14,7 @@ public class GlobalUserContextService {
 
     /**
      * -- SETTER --
-     *  Explicitly set the current user ID for this request/context
-     *
-     * @param userId User ID to set
+     * Explicitly set the current user ID for this request/context
      */
     private UUID currentUserId;
 
