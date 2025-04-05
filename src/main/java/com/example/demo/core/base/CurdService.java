@@ -8,14 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class CurdService<T extends BaseEntity> {
-    private final BaseRepository<T> baseRepository;
-    private ModelMapper modelMapper;
+    protected final BaseRepository<T> repository;
+    protected ModelMapper modelMapper;
 
-    protected CurdService(BaseRepository<T> baseRepository) {
-        this.baseRepository = baseRepository;
+    protected CurdService(BaseRepository<T> repository) {
+        this.repository = repository;
     }
 
     @Autowired
@@ -25,27 +27,31 @@ public abstract class CurdService<T extends BaseEntity> {
         this.modelMapper = modelMapper;
     }
 
+    public List<T> getAll() {
+        return repository.findAll();
+    }
+
     public T getById(UUID id) {
-        return baseRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND));
     }
 
     public T create(BaseDto baseDto) {
         T t = modelMapper.map(baseDto, getEntityClass());
-        return baseRepository.save(t);
+        return repository.save(t);
     }
 
     public T update(UUID id, BaseDto baseDto) {
-        var t = baseRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND));
+        var t = repository.findById(id)
+                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
         MapperUtils.mapNonNullFields(baseDto, t);
-        return baseRepository.save(t);
+        return repository.save(t);
     }
 
     public void delete(UUID id) {
-        var t = baseRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND));
-        baseRepository.delete(t);
+        var t = repository.findById(id)
+                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
+        repository.delete(t);
     }
 
     /**

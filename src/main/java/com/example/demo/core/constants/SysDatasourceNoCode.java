@@ -13,6 +13,7 @@ public enum SysDatasourceNoCode {
     SYS_PERMISSIONS_TYPE("PERM_TYPE"),
     SYS_SETTING("SET"),
     SYS_SETTING_REPORT("SET_RPT"),
-    SYS_TEMPLATE("TPL"), SYS_CLIENT("CLI");
+    SYS_TEMPLATE("TPL"),
+    SYS_CLIENT("CLI");
     public final String prefixNoCode;
 }

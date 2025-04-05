@@ -1,7 +1,6 @@
 package com.example.demo.core.dto.request;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +8,6 @@ import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
-@Builder
 public class QueryParamsType {
     Integer limit = 20;
     String search = "";

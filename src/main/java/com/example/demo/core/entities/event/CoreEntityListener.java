@@ -1,7 +1,7 @@
 package com.example.demo.core.entities.event;
 
-import com.example.demo.core.context.GlobalUserContextService;
 import com.example.demo.core.base.BaseEntity;
+import com.example.demo.core.context.GlobalUserContextService;
 import com.example.demo.core.utils.CodeGenerationUtils;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
@@ -10,7 +10,7 @@ import jakarta.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 
@@ -42,8 +42,8 @@ public class CoreEntityListener {
     @PrePersist
     public void prePersist(BaseEntity entity) {
         // Set creation and last modification dates to the current date and time
-        entity.setCreatedDate(new Date());
-        entity.setLastModifiedDate(new Date());
+        entity.setCreatedDate(Instant.now());
+        entity.setLastModifiedDate(Instant.now());
 
         // Add no code
         var noCode = entity.getPrefixNoCode().prefixNoCode;
@@ -67,7 +67,7 @@ public class CoreEntityListener {
     @PreUpdate
     public void preUpdate(BaseEntity entity) {
         // Set last modification date to the current date and time
-        entity.setLastModifiedDate(new Date());
+        entity.setLastModifiedDate(Instant.now());
 
         // Retrieve the current user's ID from the user context service
         var userId = userContextService.getUserId();
@@ -98,10 +98,10 @@ public class CoreEntityListener {
      */
     @PreRemove
     public void preRemove(BaseEntity entity) {
-        entity.setDeletedDate(new Date());
+        entity.setDeletedDate(Instant.now());
         entity.setIsDelete(true);
 
         var userId = userContextService.getUserId();
-        entity.setDeletedById(userId);
+        entity.setDeletedById(userId.toString());
     }
 }
