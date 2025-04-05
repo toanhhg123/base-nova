@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "sys_resources")
-public class SysResource extends CoreEntity {
+public class SysResource extends BaseEntity {
     @Column(name = "resource")
     private String resource;
 

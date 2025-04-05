@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "sys_users_tokens")
-public class SysUsersToken extends CoreEntity {
+public class SysUsersToken extends BaseEntity {
     @Column(name = "user_id")
     private UUID userId;
 

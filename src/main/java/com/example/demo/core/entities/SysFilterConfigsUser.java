@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "sys_filter_configs_users")
-public class SysFilterConfigsUser extends CoreEntity {
+public class SysFilterConfigsUser extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "resource_id", nullable = false)
     private SysResource resource;

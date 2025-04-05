@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ import java.util.Map;
 @Setter
 @Entity
 @Table(name = "sys_clients")
-public class SysClient extends CoreEntity {
+public class SysClient extends BaseEntity {
     @Column(name = "\"clientId\"", nullable = false, length = Integer.MAX_VALUE)
     private String clientId;
 

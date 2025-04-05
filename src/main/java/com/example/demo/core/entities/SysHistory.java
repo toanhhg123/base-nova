@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "sys_histories")
-public class SysHistory extends CoreEntity {
+public class SysHistory extends BaseEntity {
     @Column(name = "primary_table", nullable = false, length = Integer.MAX_VALUE)
     private String primaryTable;
 

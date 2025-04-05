@@ -1,7 +1,7 @@
 package com.example.demo.core.entities.event;
 
 import com.example.demo.core.context.GlobalUserContextService;
-import com.example.demo.core.entities.CoreEntity;
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.utils.CodeGenerationUtils;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
@@ -40,7 +40,7 @@ public class CoreEntityListener {
      * Initializes creation and last modification dates, and sets the creator's ID.
      */
     @PrePersist
-    public void prePersist(CoreEntity entity) {
+    public void prePersist(BaseEntity entity) {
         // Set creation and last modification dates to the current date and time
         entity.setCreatedDate(new Date());
         entity.setLastModifiedDate(new Date());
@@ -65,13 +65,13 @@ public class CoreEntityListener {
      * @param entity the entity to be updated
      */
     @PreUpdate
-    public void preUpdate(CoreEntity entity) {
+    public void preUpdate(BaseEntity entity) {
         // Set last modification date to the current date and time
         entity.setLastModifiedDate(new Date());
 
         // Retrieve the current user's ID from the user context service
         var userId = userContextService.getUserId();
-        if(Objects.isNull(userId)) return;
+        if (Objects.isNull(userId)) return;
         entity.setLastModifiedById(userId);
     }
 
@@ -85,7 +85,7 @@ public class CoreEntityListener {
      * @param entity the entity that has been loaded from the database
      */
     @PostLoad
-    public void postLoad(CoreEntity entity) {
+    public void postLoad(BaseEntity entity) {
         entity.setCurrentUserId(userContextService.getUserId());
     }
 
@@ -97,7 +97,7 @@ public class CoreEntityListener {
      * @param entity the entity that is about to be removed from the database
      */
     @PreRemove
-    public void preRemove(CoreEntity entity) {
+    public void preRemove(BaseEntity entity) {
         entity.setDeletedDate(new Date());
         entity.setIsDelete(true);
 

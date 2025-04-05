@@ -1,4 +1,4 @@
-package com.example.demo.core.entities;
+package com.example.demo.core.base;
 
 
 import com.example.demo.core.constants.SysDatasourceNoCode;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PROTECTED)
 @EntityListeners(CoreEntityListener.class)
-public abstract class CoreEntity {
+public abstract class BaseEntity {
     /**
      * Khóa chính sử dụng chiến lược sinh UUID.
      */

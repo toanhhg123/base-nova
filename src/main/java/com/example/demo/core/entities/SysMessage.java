@@ -1,6 +1,7 @@
 package com.example.demo.core.entities;
 
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "sys_message")
-public class SysMessage extends CoreEntity {
+public class SysMessage extends BaseEntity {
     @Column(name = "message_seq", length = Integer.MAX_VALUE)
     String messageSeq;
 
@@ -39,7 +40,6 @@ public class SysMessage extends CoreEntity {
     @ColumnDefault("200")
     @Column(name = "status_code", nullable = false)
     Integer statusCode;
-
 
     @Override
     public SysDatasourceNoCode getPrefixNoCode() {

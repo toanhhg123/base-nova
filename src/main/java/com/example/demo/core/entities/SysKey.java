@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "sys_keys")
-public class SysKey extends CoreEntity {
+public class SysKey extends BaseEntity {
     @Column(name = "service_name", length = Integer.MAX_VALUE)
     private String serviceName;
 

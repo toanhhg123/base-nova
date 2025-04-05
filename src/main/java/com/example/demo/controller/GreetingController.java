@@ -1,32 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.core.constants.HttpStatusMessage;
-import com.example.demo.core.entities.SysMessage;
-import com.example.demo.core.exception.BusinessException;
 import com.example.demo.core.i18n.MessageService;
 import com.example.demo.core.i18n.messages.MessageI18n;
 import com.example.demo.core.repositories.SysMessageRepository;
 import com.example.demo.core.security.user.UserDetailsImplKeyCloak;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RestController
 @AllArgsConstructor
 @Slf4j
 public class GreetingController {
-    private final MessageService messageService;
-    private final SysMessageRepository sysMessageRepository;
+    MessageService messageService;
+    SysMessageRepository sysMessageRepository;
 
     @PostMapping("/tracking-info")
     @PreAuthorize("hasRole('APP_USER')")
@@ -34,43 +32,6 @@ public class GreetingController {
         Span span = Span.current();
         return span.getSpanContext();
     }
-
-    @GetMapping("/message")
-    public List<SysMessage> getMessages() {
-        return sysMessageRepository.findAll();
-    }
-
-
-    @GetMapping("/create-message")
-    public SysMessage createMessage() {
-        SysMessage sysMessage = new SysMessage();
-        sysMessage.setMessageCode("test");
-        sysMessage.setMessageSeq("test");
-        sysMessage.setStatusCode(200);
-        sysMessage.setTranslations(
-                Map.of(
-                        "en", "test",
-                        "vi", "test"
-                )
-        );
-        return sysMessageRepository.save(sysMessage);
-    }
-
-    @DeleteMapping("/message/{id}")
-    public SysMessage deleteMessage(@PathVariable() UUID id) {
-        var message = sysMessageRepository
-                .findById(id)
-                .orElseThrow(
-                        () -> BusinessException
-                                .builder()
-                                .statusMessage(HttpStatusMessage.DATA_NOT_FOUND)
-                                .parameters(Map.of("fields", "id:" + id))
-                                .build()
-                );
-        sysMessageRepository.delete(message);
-        return message;
-    }
-
 
     @GetMapping("/me")
     public UserDetailsImplKeyCloak getCurrentUser() {

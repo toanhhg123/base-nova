@@ -11,10 +11,10 @@ import java.util.Map;
 @Data
 @Builder
 public class QueryParamsType {
-    Integer limit;
-    String search;
-    Integer page;
-    Long startTime;
-    Long endTime;
+    Integer limit = 20;
+    String search = "";
+    Integer page = 1;
+    Long startTime = 0L;
+    Long endTime = 0L;
     Map<String, Object> additionalParams;
 }

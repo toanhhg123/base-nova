@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.Map;
 @Setter
 @Entity
 @Table(name = "sys_permissions_type_users")
-public class SysPermissionsTypeUser extends CoreEntity {
+public class SysPermissionsTypeUser extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private SysUser user;

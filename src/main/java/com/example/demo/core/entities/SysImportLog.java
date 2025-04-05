@@ -1,5 +1,6 @@
 package com.example.demo.core.entities;
 
+import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Setter
 @Entity
 @Table(name = "sys_import_logs")
-public class SysImportLog extends CoreEntity {
+public class SysImportLog extends BaseEntity {
     @Column(name = "file_name_original")
     private String fileNameOriginal;
 
