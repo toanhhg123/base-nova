@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -24,7 +23,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
 @FieldDefaults(level = AccessLevel.PROTECTED)
 @EntityListeners(CoreEntityListener.class)
 public abstract class BaseEntity {

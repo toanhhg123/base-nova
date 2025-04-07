@@ -38,9 +38,7 @@ public class SysResourceController {
 
     @PostMapping
     public ResponseEntityData<SysResourceDto> create(
-            @RequestBody
-            @Valid
-            SysResourceCreateDto sysResourceCreateDto) {
+            @RequestBody @Valid SysResourceCreateDto sysResourceCreateDto) {
         var data = service.createResource(sysResourceCreateDto);
         return ResponseEntityData.success(data);
     }

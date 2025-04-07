@@ -3,7 +3,7 @@ package com.example.demo.core.constants;
 import org.springframework.http.HttpStatus;
 
 /**
- * Enum đại diện cho các mã trạng thái HTTP cùng với mã thông báo tương ứng.
+ * Enum đại dian cho các mã trạng thái HTTP cùng với mã thông báo tương ứng.
  * Giữ nguyên mã thông báo từ phiên bản TypeScript trong khi cung cấp chức năng enum trong Java.
  */
 public enum HttpStatusMessage {

@@ -48,6 +48,7 @@ public class SecurityConfig {
         /* Define authorization rules */
         http.authorizeHttpRequests(req -> req
                 .requestMatchers("/actuator/**").permitAll() // Allow access to actuator endpoints
+                .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()); // All other requests must be authenticated
 
         /* Configure OAuth2 resource server with JWT authentication */

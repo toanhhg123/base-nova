@@ -21,8 +21,7 @@ public class SysUserSpecifications {
             return cb.or(
                     cb.like(cb.lower(root.get("userName")), pattern),
                     cb.like(cb.lower(root.get("email")), pattern),
-                    cb.like(cb.lower(root.get("phoneMobile")), pattern)
-            );
+                    cb.like(cb.lower(root.get("phoneMobile")), pattern));
         };
     }
 
@@ -47,10 +46,14 @@ public class SysUserSpecifications {
     static Specification<SysUser> withRoles() {
         return (root, query, cb) -> {
             // Chỉ fetch khi query cho User entity
-            assert query != null;
+            if (query == null || query.getResultType() == null) {
+                return cb.conjunction();
+            }
+
             if (query.getResultType() == SysUser.class || query.getResultType() == Object.class) {
                 root.fetch("sysUsersRoles", JoinType.LEFT);
             }
+
             return cb.conjunction();
         };
     }
