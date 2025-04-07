@@ -6,18 +6,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Map;
+import java.time.Instant;
 
 /**
- * DTO for {@link com.example.demo.core.entities.SysMessage}
+ * DTO for {@link com.example.demo.core.entities.SysUserRole}
  */
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysMessageResponse extends BaseEntityDto {
-    String messageSeq;
-    String messageCode;
-    transient Map<String, String> translations;
-    Integer statusCode;
+public class SysUserRoleDto extends BaseEntityDto {
+    Integer priority;
+    Boolean isExpired;
+    Instant startDate;
+    Instant endDate;
+    Integer roleType;
 }

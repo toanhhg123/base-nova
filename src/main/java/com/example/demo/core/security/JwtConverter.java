@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-
 @SuppressWarnings("unchecked")
 public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken> {
     private static final String ROLE_PREFIX = "ROLE_";
@@ -24,28 +23,25 @@ public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken>
 
     /**
      * var user = UserDetailsImplKeyCloak.builder()
-     *                 .authorities(authorities)
-     *                 .username(getUsername(source))
-     *                 .id(source.getClaimAsString("sub"))
-     *                 .claims(source.getClaims())
-     *                 .build();
+     * .authorities(authorities)
+     * .username(getUsername(source))
+     * .id(source.getClaimAsString("sub"))
+     * .claims(source.getClaims())
+     * .build();
      */
     @Override
     public AbstractAuthenticationToken convert(@NonNull Jwt source) {
         Collection<GrantedAuthority> authorities = extractAuthorities(source);
-
-
+        var sub = source.getSubject();
 
         var user = UserDetailsImpl.builder()
-                .id(UUID.randomUUID())
-                .userId("6666779c47f9866825a80fb1")
-                .username("test")
-                .password("password")
-                .level("66700957b9d9d515cb1e6695")
-                .role("6666769a409bedc9a7a48493")
+                .id(UUID.fromString(sub))
+                .userId(source.getClaimAsString("userId"))
+                .level(source.getClaimAsString("level"))
+                .role(source.getClaimAsString("role"))
                 .build();
 
-        var token =  new JwtAuthenticationToken(source, authorities);
+        var token = new JwtAuthenticationToken(source, authorities);
         token.setDetails(user);
         return token;
     }

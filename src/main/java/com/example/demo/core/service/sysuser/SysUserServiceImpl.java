@@ -1,34 +1,55 @@
 package com.example.demo.core.service.sysuser;
 
-import com.example.demo.core.base.CurdService;
-import com.example.demo.core.dto.response.SysUserResponse;
-import com.example.demo.core.entities.SysUser;
+import com.example.demo.core.dto.model.DataWithPagination;
+import com.example.demo.core.dto.request.QueryParams;
+import com.example.demo.core.dto.response.SysUserDto;
 import com.example.demo.core.repositories.SysUserRepository;
+import com.example.demo.core.utils.PaginationUtils;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
-public class SysUserServiceImpl extends CurdService<SysUser> implements SysUserService {
-    private final SysUserRepository sysUserRepository;
+@AllArgsConstructor
+public class SysUserServiceImpl implements SysUserService {
+    private final SysUserRepository repository;
+    private final ModelMapper modelMapper;
 
-    protected SysUserServiceImpl(SysUserRepository repository) {
-        super(repository);
-        this.sysUserRepository = repository;
+
+    @Override
+    public SysUserDto findById(UUID id) {
+        var user = getById(id);
+        return modelMapper.map(user, SysUserDto.class);
     }
 
     @Override
-    public SysUserResponse findById(UUID id) {
-        var user = super.getById(id);
-        return modelMapper.map(user, SysUserResponse.class);
+    public DataWithPagination<SysUserDto> findAll(QueryParams queryParams) {
+        var spec = Specification
+                .where(SysUserSpecifications.withRoles())
+                .and(SysUserSpecifications.hasSearchTerm(queryParams.getSearch()))
+                .and(SysUserSpecifications.modifiedAfter(queryParams.getStartTime()))
+                .and(SysUserSpecifications.modifiedBefore(queryParams.getEndTime()));
+
+        var page = repository.findAll(spec, queryParams.toPageable());
+
+        return PaginationUtils.mapPageToDataWithPagination(
+                page,
+                user -> modelMapper.map(user, SysUserDto.class));
+
+
     }
 
     @Override
-    public List<SysUserResponse> findAll() {
-        var users = sysUserRepository.findAllWithFetch();
-        return users.stream()
-                .map(user -> modelMapper.map(user, SysUserResponse.class))
-                .toList();
+    public SysUserRepository getRepository() {
+        return repository;
     }
+
+    @Override
+    public ModelMapper getModelMapper() {
+        return modelMapper;
+    }
+
 }

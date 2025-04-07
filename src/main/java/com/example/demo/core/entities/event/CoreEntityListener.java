@@ -59,7 +59,9 @@ public class CoreEntityListener {
 
     /**
      * Callback method executed before a Java Persistence API (JPA) entity is updated to the database.
+     * <p>
      * Updates the last modification date to the current date and time.
+     * <p>
      * Also sets the modifier's ID to the current user's ID if the user is signed in.
      *
      * @param entity the entity to be updated
@@ -72,6 +74,7 @@ public class CoreEntityListener {
         // Retrieve the current user's ID from the user context service
         var userId = userContextService.getUserId();
         if (Objects.isNull(userId)) return;
+        entity.setCurrentUserId(userId);
         entity.setLastModifiedById(userId);
     }
 

@@ -1,79 +1,131 @@
 package com.example.demo.core.base;
 
 import com.example.demo.core.constants.HttpStatusMessage;
+import com.example.demo.core.dto.model.DataWithPagination;
 import com.example.demo.core.exception.BusinessException;
 import com.example.demo.core.utils.MapperUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
-public abstract class CurdService<T extends BaseEntity> {
-    protected final BaseRepository<T> repository;
-    protected ModelMapper modelMapper;
+/**
+ * Interface cung cấp các phương thức CRUD cơ bản cho các entity
+ *
+ * @param <T> Loại entity kế thừa từ BaseEntity
+ * @param <R> Loại repository tương ứng với entity
+ */
+public interface CurdService<T extends BaseEntity, R extends BaseRepository<T>> {
 
-    protected CurdService(BaseRepository<T> repository) {
-        this.repository = repository;
-    }
+    /**
+     * Lấy repository tương ứng với entity
+     *
+     * @return repository của entity
+     */
+    R getRepository();
 
-    @Autowired
-    void setterInjector(
-            ModelMapper modelMapper
-    ) {
-        this.modelMapper = modelMapper;
-    }
+    /**
+     * Lấy ModelMapper để ánh xạ dữ liệu
+     *
+     * @return đối tượng ModelMapper
+     */
+    ModelMapper getModelMapper();
 
-    public List<T> getAll() {
-        return repository.findAll();
-    }
+    // Các phương thức mặc định (có thể ghi đè nếu cần)
 
-    public T getById(UUID id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND));
-    }
-
-    public T create(BaseDto baseDto) {
-        T t = modelMapper.map(baseDto, getEntityClass());
-        return repository.save(t);
-    }
-
-    public T update(UUID id, BaseDto baseDto) {
-        var t = repository.findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
-        MapperUtils.mapNonNullFields(baseDto, t);
-        return repository.save(t);
-    }
-
-    public void delete(UUID id) {
-        var t = repository.findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
-        repository.delete(t);
+    /**
+     * Lấy tất cả bản ghi
+     *
+     * @return Danh sách tất cả entity
+     */
+    default List<T> getAll() {
+        return getRepository().findAll();
     }
 
     /**
-     * Gets the class of the generic type parameter T
+     * Tìm entity theo ID
+     *
+     * @param id UUID của entity cần tìm
+     * @return Entity tìm thấy
+     * @throws BusinessException nếu không tìm thấy entity
      */
-    @SuppressWarnings("unchecked")
-    private Class<T> getEntityClass() {
-        // Get the generic superclass
-        Type type = getClass().getGenericSuperclass();
-
-        // Handle case when extended through another abstract class
-        while (!(type instanceof ParameterizedType parameterizedType) ||
-                !CurdService.class.equals(parameterizedType.getRawType())
-        ) {
-            if (type instanceof ParameterizedType parameterizedType) {
-                type = ((Class<?>) parameterizedType.getRawType()).getGenericSuperclass();
-            } else {
-                type = ((Class<?>) type).getGenericSuperclass();
-            }
-        }
-
-        // Get the actual type argument (T)
-        return (Class<T>) parameterizedType.getActualTypeArguments()[0];
+    default T getById(UUID id) {
+        return getRepository().findById(id)
+                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
     }
+
+    /**
+     * Phân trang dữ liệu với điều kiện tìm kiếm
+     *
+     * @param spec        Điều kiện tìm kiếm
+     * @param queryParams Thông tin phân trang
+     * @return Dữ liệu phân trang
+     */
+    default DataWithPagination<T> findWithPagination(Specification<T> spec, Pageable queryParams) {
+        var page = getRepository().findAll(spec, queryParams);
+        return DataWithPagination.<T>builder()
+                .total(page.getTotalElements())
+                .totalPage(page.getTotalPages())
+                .data(page.getContent())
+                .build();
+    }
+
+    /**
+     * Tạo mới entity từ DTO
+     *
+     * @param baseRequestBodyDto DTO chứa dữ liệu
+     * @return Entity đã được tạo
+     */
+    default T create(BaseRequestBodyDto baseRequestBodyDto) {
+        T t = getModelMapper().map(baseRequestBodyDto, getEntityClass());
+        return getRepository().save(t);
+    }
+
+    /**
+     * Tạo mới entity với mapper tùy chỉnh
+     *
+     * @param baseRequestBodyDto DTO chứa dữ liệu
+     * @param mapper             Hàm ánh xạ từ DTO sang Entity
+     * @return Entity đã được tạo
+     */
+    default T create(BaseRequestBodyDto baseRequestBodyDto, Function<BaseRequestBodyDto, T> mapper) {
+        T t = mapper.apply(baseRequestBodyDto);
+        return getRepository().save(t);
+    }
+
+    /**
+     * Cập nhật entity
+     *
+     * @param id                 UUID của entity cần cập nhật
+     * @param baseRequestBodyDto DTO chứa dữ liệu cập nhật
+     * @return Entity đã được cập nhật
+     */
+    default T update(UUID id, BaseRequestBodyDto baseRequestBodyDto) {
+        var t = getById(id);
+        MapperUtils.mapNonNullFields(baseRequestBodyDto, t);
+        return getRepository().save(t);
+    }
+
+    /**
+     * Xóa entity theo ID
+     *
+     * @param id UUID của entity cần xóa
+     * @throws BusinessException nếu không tìm thấy entity
+     */
+    default void delete(UUID id) {
+        var t = getRepository().findById(id)
+                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
+        getRepository().delete(t);
+    }
+
+    /**
+     * Lấy class của entity
+     *
+     * @return Class object của entity
+     */
+    Class<T> getEntityClass();
 }

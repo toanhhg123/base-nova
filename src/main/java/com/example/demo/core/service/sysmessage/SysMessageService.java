@@ -1,12 +1,17 @@
 package com.example.demo.core.service.sysmessage;
 
-import com.example.demo.core.dto.body.SysMessageDto;
-import com.example.demo.core.dto.response.SysMessageResponse;
+import com.example.demo.core.base.CurdService;
+import com.example.demo.core.dto.response.SysMessageDto;
+import com.example.demo.core.entities.SysMessage;
+import com.example.demo.core.repositories.SysMessageRepository;
 
 import java.util.UUID;
 
-public interface SysMessageService {
-    SysMessageResponse findById(UUID id);
+public interface SysMessageService extends CurdService<SysMessage, SysMessageRepository> {
+    @Override
+    default Class<SysMessage> getEntityClass() {
+        return SysMessage.class;
+    }
 
-    UUID create(SysMessageDto sysMessageDto);
+    SysMessageDto findById(UUID id);
 }

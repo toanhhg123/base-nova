@@ -1,7 +1,7 @@
 package com.example.demo.core.controller;
 
-import com.example.demo.core.dto.body.SysMessageDto;
-import com.example.demo.core.dto.response.SysMessageResponse;
+import com.example.demo.core.dto.body.SysMessageRequestBodyDto;
+import com.example.demo.core.dto.response.SysMessageDto;
 import com.example.demo.core.service.sysmessage.SysMessageService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,14 +19,16 @@ public class SysMessageController {
     public UUID create(
             @RequestBody
             @Valid
-            SysMessageDto sysMessageDto
+            SysMessageRequestBodyDto sysMessageDto
     ) {
         return sysMessageService
-                .create(sysMessageDto);
+                .create(sysMessageDto)
+                .getId()
+                ;
     }
 
     @GetMapping("{id}")
-    public SysMessageResponse findById(
+    public SysMessageDto findById(
             @PathVariable
             UUID id
     ) {

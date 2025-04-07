@@ -14,7 +14,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysUserResponse extends BaseEntityDto {
+public class SysUserDto extends BaseEntityDto {
     String userName;
     String firstName;
     String lastName;
@@ -25,5 +25,5 @@ public class SysUserResponse extends BaseEntityDto {
     String gender;
     String email;
     String keycloakId;
-    transient Set<SysUserRoleResponse> sysUsersRoles;
+    transient Set<SysUserRoleDto> sysUsersRoles;
 }

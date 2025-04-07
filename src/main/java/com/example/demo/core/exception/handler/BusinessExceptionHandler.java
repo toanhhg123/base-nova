@@ -2,7 +2,7 @@ package com.example.demo.core.exception.handler;
 
 import com.example.demo.core.constants.Language;
 import com.example.demo.core.constants.ResponseStatus;
-import com.example.demo.core.dto.response.Response;
+import com.example.demo.core.dto.model.Response;
 import com.example.demo.core.entities.SysMessage;
 import com.example.demo.core.exception.BusinessException;
 import com.example.demo.core.loader.sysmessage.MessageCacheService;

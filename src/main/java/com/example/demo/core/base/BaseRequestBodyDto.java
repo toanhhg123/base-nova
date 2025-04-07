@@ -1,5 +1,7 @@
 package com.example.demo.core.base;
 
+import com.example.demo.core.constants.EntityStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -8,19 +10,14 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.UUID;
 
-/**
- * DTO for {@link BaseEntity}
- */
-@FieldDefaults(level = AccessLevel.PROTECTED)
-@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode
-public class BaseEntityDto implements Serializable {
-    UUID id;
-    @Size(max = 50)
-    String noCode;
+@Data
+public class BaseRequestBodyDto implements Serializable {
+    @JsonIgnore
+    protected UUID userRequestId;
     @Size(max = 255)
     String title;
     @Size(max = 255)
@@ -28,17 +25,7 @@ public class BaseEntityDto implements Serializable {
     Integer sn;
     @NotNull
     @Size(max = 20)
-    String status;
-    UUID createdById;
-    @NotNull
-    Instant createdDate;
-    UUID lastModifiedById;
-    @NotNull
-    Instant lastModifiedDate;
-    @NotNull
-    Boolean isDelete;
-    String deletedById;
-    Instant deletedDate;
+    String status = EntityStatus.ACTIVE.getValue();
     Boolean isParent;
     @NotNull
     Integer lvl;

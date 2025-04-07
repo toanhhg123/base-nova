@@ -9,7 +9,12 @@ public class MapperConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper
+                .getConfiguration()
+                .setAmbiguityIgnored(true)
+                .setSkipNullEnabled(false);
+        return modelMapper;
     }
 
 
