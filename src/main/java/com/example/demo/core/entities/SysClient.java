@@ -17,16 +17,16 @@ import java.util.Map;
 @Entity
 @Table(name = "sys_clients")
 public class SysClient extends BaseEntity {
-    @Column(name = "\"clientId\"", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "client_id", nullable = false, length = Integer.MAX_VALUE)
     private String clientId;
 
-    @Column(name = "\"publicKey\"", nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "public_key", nullable = false, length = Integer.MAX_VALUE)
     private String publicKey;
 
-    @Column(name = "\"ipWhitelist\"", length = Integer.MAX_VALUE)
+    @Column(name = "ip_whitelist", length = Integer.MAX_VALUE)
     private String ipWhitelist;
 
-    @Column(name = "\"allowedEndpoints\"")
+    @Column(name = "allowed_endpoints")
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> allowedEndpoints;
 

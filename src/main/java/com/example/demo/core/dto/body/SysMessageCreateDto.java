@@ -1,13 +1,12 @@
 package com.example.demo.core.dto.body;
 
 import com.example.demo.core.base.BaseEntityRequestDto;
-import jakarta.validation.constraints.Min;
+import com.example.demo.core.constants.Validate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,19 +14,19 @@ import java.util.Map;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SysMessageEntityRequestDto extends BaseEntityRequestDto {
+public class SysMessageCreateDto extends BaseEntityRequestDto {
     @NotNull
     @NotBlank
     String messageSeq;
 
-    @NotNull
-    @NotBlank
+
+    @NotBlank(message = Validate.NOT_BLANK)
+    @NotNull(message = Validate.REQUIRED)
     String messageCode;
 
-    @NotNull
-    @Min(100)
-    Integer statusCode;
+    @NotNull(message = Validate.REQUIRED)
+    transient Map<String, String> translations;
 
-    @NotNull
-    transient Map<String, String> translations = new HashMap<>();
+    @NotNull(message = Validate.REQUIRED)
+    Integer statusCode;
 }
