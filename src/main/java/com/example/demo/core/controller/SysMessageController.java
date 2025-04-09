@@ -24,8 +24,7 @@ public class SysMessageController {
     }
 
     @GetMapping("{id}")
-    public SysMessageDto findById(
-            @PathVariable UUID id) {
+    public SysMessageDto findById(@PathVariable UUID id) {
         return sysMessageService
                 .findById(id);
     }

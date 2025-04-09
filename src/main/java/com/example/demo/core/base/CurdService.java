@@ -20,6 +20,7 @@ import java.util.function.Function;
  * @param <R> Loại repository tương ứng với entity
  */
 public interface CurdService<T extends BaseEntity, R extends BaseRepository<T>> {
+    ModelMapper modelMapper = MapperUtils.getDefaultMapper();
 
     /**
      * Lấy repository tương ứng với entity

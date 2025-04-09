@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("auth")
 public class AuthController {
     @GetMapping("device-info")
     public DeviceInfo deviceInfo(DeviceInfo host) {
