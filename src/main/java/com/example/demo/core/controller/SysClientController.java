@@ -6,6 +6,7 @@ import com.example.demo.core.dto.model.ResponseEntityData;
 import com.example.demo.core.dto.model.ResponseEntityPagination;
 import com.example.demo.core.dto.params.QueryParams;
 import com.example.demo.core.dto.response.SysClientDto;
+import com.example.demo.core.security.annotation.Auth;
 import com.example.demo.core.service.sysclient.SysClientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class SysClientController {
      * @param queryParams thông tin phân trang và tìm kiếm
      * @return danh sách client
      */
+    @Auth(resource = "client", scope = {"read", "write"})
     @GetMapping
     public ResponseEntityPagination<SysClientDto> findAll(QueryParams queryParams) {
         var response = service.findAllClients(queryParams);

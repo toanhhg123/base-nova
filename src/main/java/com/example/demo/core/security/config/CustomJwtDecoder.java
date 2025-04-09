@@ -1,4 +1,4 @@
-package com.example.demo.core.security;
+package com.example.demo.core.security.config;
 
 import com.example.demo.core.constants.JwtConfigProperties;
 import lombok.AllArgsConstructor;

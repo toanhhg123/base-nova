@@ -13,5 +13,4 @@ public class MapperConfiguration {
         return MapperUtils.getDefaultMapper();
     }
 
-
 }

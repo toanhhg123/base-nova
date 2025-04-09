@@ -1,4 +1,4 @@
-package com.example.demo.core.security;
+package com.example.demo.core.security.converter;
 
 import com.example.demo.core.security.user.UserDetailsImpl;
 import org.springframework.core.convert.converter.Converter;

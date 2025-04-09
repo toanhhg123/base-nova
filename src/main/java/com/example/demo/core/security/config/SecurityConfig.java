@@ -1,9 +1,6 @@
-package com.example.demo.core.security.annotation;
+package com.example.demo.core.security.config;
 
-import com.example.demo.core.security.CustomAccessDeniedHandler;
-import com.example.demo.core.security.CustomAuthenticationEntryPoint;
-import com.example.demo.core.security.CustomJwtDecoder;
-import com.example.demo.core.security.JwtConverter;
+import com.example.demo.core.security.converter.JwtConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

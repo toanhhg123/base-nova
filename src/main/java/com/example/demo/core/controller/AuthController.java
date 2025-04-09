@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+    
     @GetMapping("device-info")
     public DeviceInfo deviceInfo(DeviceInfo host) {
         log.info("device-info: {}", host);

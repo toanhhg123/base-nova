@@ -1,4 +1,12 @@
 package com.example.demo.core.security.annotation;
 
-public class Auth {
+import java.lang.annotation.*;
+
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Auth {
+    String resource();
+
+    String[] scope();
 }
