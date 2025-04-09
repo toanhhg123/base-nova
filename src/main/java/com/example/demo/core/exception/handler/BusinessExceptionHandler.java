@@ -1,20 +1,16 @@
 package com.example.demo.core.exception.handler;
 
-import com.example.demo.core.constants.Language;
 import com.example.demo.core.constants.ResponseStatus;
 import com.example.demo.core.dto.model.Response;
 import com.example.demo.core.entities.SysMessage;
 import com.example.demo.core.exception.BusinessException;
+import com.example.demo.core.exception.ExceptionHandlerHelper;
 import com.example.demo.core.loader.sysmessage.MessageCacheService;
-import com.example.demo.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Xử lý ngoại lệ toàn cục cho BusinessException.
@@ -25,6 +21,7 @@ import java.util.Optional;
 public class BusinessExceptionHandler {
 
     private final MessageCacheService messageCacheService;
+    private final ExceptionHandlerHelper helper;
 
     /**
      * Xử lý BusinessException và tạo phản hồi lỗi chuẩn hóa.
@@ -42,10 +39,10 @@ public class BusinessExceptionHandler {
         SysMessage sysMessage = messageCacheService.getByMessageCode(ex.getResponseCode());
 
         // Xác định ngôn ngữ từ header request (mặc định tiếng Việt nếu không chỉ định)
-        String lang = getLanguageFromRequest(request);
+        String lang = helper.getLanguageFromRequest(request);
 
         // Xây dựng thông báo lỗi đã được địa phương hóa với các tham số
-        String localizedMessage = buildLocalizedMessage(sysMessage, lang, ex.getParameters());
+        String localizedMessage = helper.buildLocalizedMessage(sysMessage, lang, ex.getParameters());
 
         // Tạo phản hồi lỗi chuẩn hóa
         Response response = buildErrorResponse(ex, sysMessage, localizedMessage);
@@ -54,31 +51,7 @@ public class BusinessExceptionHandler {
                 .status(ex.getResponseCode().statusCode)
                 .body(response);
     }
-
-    /**
-     * Lấy ngôn ngữ từ header của request.
-     *
-     * @param request Yêu cầu web
-     * @return Mã ngôn ngữ (mặc định là tiếng Việt)
-     */
-    private String getLanguageFromRequest(WebRequest request) {
-        return Optional.ofNullable(request.getHeader(Language.LANG_HEADER.value))
-                .orElse(Language.VI.value);
-    }
-
-    /**
-     * Xây dựng thông báo đã được địa phương hóa với thay thế tham số.
-     *
-     * @param sysMessage Mẫu thông báo hệ thống
-     * @param lang       Ngôn ngữ đích
-     * @param parameters Các tham số thông báo
-     * @return Chuỗi thông báo đã định dạng
-     */
-    private String buildLocalizedMessage(SysMessage sysMessage, String lang, Map<String, String> parameters) {
-        String messageTemplate = sysMessage.getTranslations().get(lang);
-        return StringUtils.replacePlaceholders(messageTemplate, parameters);
-    }
-
+    
     /**
      * Tạo đối tượng phản hồi lỗi chuẩn hóa.
      *
@@ -95,24 +68,8 @@ public class BusinessExceptionHandler {
                 .messCode(ex.getResponseCode().messageCode)
                 .messSeq(sysMessage.getMessageSeq())
                 .messParam(ex.getParameters())
-                .messLang(getAllTranslations(sysMessage, ex.getParameters()))
+                .messLang(helper.getAllTranslations(sysMessage, ex.getParameters()))
                 .build();
     }
 
-    /**
-     * Lấy tất cả bản dịch có sẵn cho thông báo với các tham số đã được thay thế.
-     *
-     * @param sysMessage Mẫu thông báo hệ thống
-     * @param params     Các tham số thông báo
-     * @return Map mã ngôn ngữ với thông báo đã dịch
-     */
-    private Map<String, String> getAllTranslations(SysMessage sysMessage, Map<String, String> params) {
-        String messageVI = sysMessage.getTranslations().getOrDefault(Language.VI.value, "");
-        String messageEN = sysMessage.getTranslations().getOrDefault(Language.EN.value, "");
-
-        return Map.of(
-                Language.VI.value, StringUtils.replacePlaceholders(messageVI, params),
-                Language.EN.value, StringUtils.replacePlaceholders(messageEN, params)
-        );
-    }
 }
