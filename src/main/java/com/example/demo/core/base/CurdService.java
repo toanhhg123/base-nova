@@ -1,6 +1,6 @@
 package com.example.demo.core.base;
 
-import com.example.demo.core.constants.HttpStatusMessage;
+import com.example.demo.core.constants.ResponseCode;
 import com.example.demo.core.dto.model.DataWithPagination;
 import com.example.demo.core.exception.BusinessException;
 import com.example.demo.core.utils.MapperUtils;
@@ -33,7 +33,9 @@ public interface CurdService<T extends BaseEntity, R extends BaseRepository<T>> 
      *
      * @return đối tượng ModelMapper
      */
-    ModelMapper getModelMapper();
+    default ModelMapper getModelMapper() {
+        return MapperUtils.getDefaultMapper();
+    }
 
     // Các phương thức mặc định (có thể ghi đè nếu cần)
 
@@ -55,7 +57,7 @@ public interface CurdService<T extends BaseEntity, R extends BaseRepository<T>> 
      */
     default T getById(UUID id) {
         return getRepository().findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
+                .orElseThrow(() -> new BusinessException(ResponseCode.DATA_NOT_FOUND, Map.of("fields", id.toString())));
     }
 
     /**
@@ -77,36 +79,36 @@ public interface CurdService<T extends BaseEntity, R extends BaseRepository<T>> 
     /**
      * Tạo mới entity từ DTO
      *
-     * @param baseRequestBodyDto DTO chứa dữ liệu
+     * @param baseEntityRequestDto DTO chứa dữ liệu
      * @return Entity đã được tạo
      */
-    default T create(BaseRequestBodyDto baseRequestBodyDto) {
-        T t = getModelMapper().map(baseRequestBodyDto, getEntityClass());
+    default T create(BaseEntityRequestDto baseEntityRequestDto) {
+        T t = getModelMapper().map(baseEntityRequestDto, getEntityClass());
         return getRepository().save(t);
     }
 
     /**
      * Tạo mới entity với mapper tùy chỉnh
      *
-     * @param baseRequestBodyDto DTO chứa dữ liệu
-     * @param mapper             Hàm ánh xạ từ DTO sang Entity
+     * @param baseEntityRequestDto DTO chứa dữ liệu
+     * @param mapper               Hàm ánh xạ từ DTO sang Entity
      * @return Entity đã được tạo
      */
-    default T create(BaseRequestBodyDto baseRequestBodyDto, Function<BaseRequestBodyDto, T> mapper) {
-        T t = mapper.apply(baseRequestBodyDto);
+    default T create(BaseEntityRequestDto baseEntityRequestDto, Function<BaseEntityRequestDto, T> mapper) {
+        T t = mapper.apply(baseEntityRequestDto);
         return getRepository().save(t);
     }
 
     /**
      * Cập nhật entity
      *
-     * @param id                 UUID của entity cần cập nhật
-     * @param baseRequestBodyDto DTO chứa dữ liệu cập nhật
+     * @param id                   UUID của entity cần cập nhật
+     * @param baseEntityRequestDto DTO chứa dữ liệu cập nhật
      * @return Entity đã được cập nhật
      */
-    default T update(UUID id, BaseRequestBodyDto baseRequestBodyDto) {
+    default T update(UUID id, BaseEntityRequestDto baseEntityRequestDto) {
         var t = getById(id);
-        MapperUtils.mapNonNullFields(baseRequestBodyDto, t);
+        MapperUtils.mapNonNullFields(baseEntityRequestDto, t);
         return getRepository().save(t);
     }
 
@@ -118,7 +120,7 @@ public interface CurdService<T extends BaseEntity, R extends BaseRepository<T>> 
      */
     default void delete(UUID id) {
         var t = getRepository().findById(id)
-                .orElseThrow(() -> new BusinessException(HttpStatusMessage.DATA_NOT_FOUND, Map.of("fields", id.toString())));
+                .orElseThrow(() -> new BusinessException(ResponseCode.DATA_NOT_FOUND, Map.of("fields", id.toString())));
         getRepository().delete(t);
     }
 

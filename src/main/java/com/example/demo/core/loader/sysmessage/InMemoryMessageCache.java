@@ -1,6 +1,7 @@
 package com.example.demo.core.loader.sysmessage;
 
-import com.example.demo.core.constants.HttpStatusMessage;
+import com.example.demo.core.constants.Language;
+import com.example.demo.core.constants.ResponseCode;
 import com.example.demo.core.entities.SysMessage;
 import com.example.demo.core.repositories.SysMessageRepository;
 import jakarta.annotation.PostConstruct;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -45,8 +47,25 @@ public class InMemoryMessageCache implements MessageCacheService {
     }
 
     @Override
-    public SysMessage getByMessageCode(HttpStatusMessage httpStatusMessage) {
-        return this.messageCodeCache.get(httpStatusMessage.messageCode);
+    public SysMessage getByMessageCode(ResponseCode responseCode) {
+        return this.messageCodeCache.get(responseCode.messageCode);
+    }
+
+    @Override
+    public SysMessage getByMessageCode(String messageCode) {
+        return this.messageCodeCache.get(messageCode);
+    }
+
+    @Override
+    public String getMessageTranslate(String messageCode, Language language) {
+        SysMessage sysMessage = this.messageCodeCache.get(messageCode);
+        if (Objects.isNull(sysMessage)) return null;
+        return sysMessage.getTranslations().get(language.value);
+    }
+
+    @Override
+    public String getMessageTranslate(ResponseCode messageCode, Language language) {
+        return getMessageTranslate(messageCode.messageCode, language);
     }
 
 

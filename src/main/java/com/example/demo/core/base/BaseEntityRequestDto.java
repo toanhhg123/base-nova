@@ -1,6 +1,7 @@
 package com.example.demo.core.base;
 
 import com.example.demo.core.constants.EntityStatus;
+import com.example.demo.core.constants.Validate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode
 @Data
-public class BaseRequestBodyDto implements Serializable {
+public class BaseEntityRequestDto implements Serializable {
     @JsonIgnore
     protected UUID userRequestId;
     @Size(max = 255)
@@ -27,7 +28,7 @@ public class BaseRequestBodyDto implements Serializable {
     @Size(max = 20)
     String status = EntityStatus.ACTIVE.getValue();
     Boolean isParent;
-    @NotNull
+    @NotNull(message = Validate.REQUIRED)
     Integer lvl;
     String parentId;
     Integer subSn;

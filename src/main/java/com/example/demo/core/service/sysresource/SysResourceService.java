@@ -1,9 +1,9 @@
 package com.example.demo.core.service.sysresource;
 
 import com.example.demo.core.base.CurdService;
-import com.example.demo.core.dto.body.SysResourceCreateDto;
+import com.example.demo.core.dto.body.SysResourceCreateDtoEntity;
 import com.example.demo.core.dto.model.DataWithPagination;
-import com.example.demo.core.dto.request.QueryParams;
+import com.example.demo.core.dto.params.QueryParams;
 import com.example.demo.core.dto.response.SysResourceDto;
 import com.example.demo.core.entities.SysResource;
 import com.example.demo.core.repositories.SysResourceRepository;
@@ -22,9 +22,9 @@ public interface SysResourceService extends CurdService<SysResource, SysResource
     SysResourceDto findById(UUID id);
 
 
-    SysResourceDto createResource(SysResourceCreateDto sysResourceCreateDto);
+    SysResourceDto createResource(SysResourceCreateDtoEntity sysResourceCreateDto);
 
-    SysResourceDto updateResource(UUID id, SysResourceCreateDto sysResourceCreateDto);
+    SysResourceDto updateResource(UUID id, SysResourceCreateDtoEntity sysResourceCreateDto);
 
 
 }

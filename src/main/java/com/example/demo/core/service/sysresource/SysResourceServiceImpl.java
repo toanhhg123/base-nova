@@ -1,9 +1,9 @@
 package com.example.demo.core.service.sysresource;
 
 import com.example.demo.core.constants.ItemType;
-import com.example.demo.core.dto.body.SysResourceCreateDto;
+import com.example.demo.core.dto.body.SysResourceCreateDtoEntity;
 import com.example.demo.core.dto.model.DataWithPagination;
-import com.example.demo.core.dto.request.QueryParams;
+import com.example.demo.core.dto.params.QueryParams;
 import com.example.demo.core.dto.response.SysResourceDto;
 import com.example.demo.core.repositories.SysResourceRepository;
 import com.example.demo.core.utils.PaginationUtils;
@@ -77,13 +77,13 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     @Override
-    public SysResourceDto createResource(SysResourceCreateDto resourceDto) {
+    public SysResourceDto createResource(SysResourceCreateDtoEntity resourceDto) {
         var data = this.create(resourceDto);
         return modelMapper.map(data, SysResourceDto.class);
     }
 
     @Override
-    public SysResourceDto updateResource(UUID id, SysResourceCreateDto sysResourceCreateDto) {
+    public SysResourceDto updateResource(UUID id, SysResourceCreateDtoEntity sysResourceCreateDto) {
         var data = this.update(id, sysResourceCreateDto);
         return modelMapper.map(data, SysResourceDto.class);
     }

@@ -1,6 +1,6 @@
 package com.example.demo.core.dto.model;
 
-import com.example.demo.core.constants.HttpStatusMessage;
+import com.example.demo.core.constants.ResponseCode;
 import com.example.demo.core.constants.ResponseStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,8 +62,8 @@ public class ResponseEntityData<T> extends ResponseEntity<ResponseData<T>> {
                 .element(data)
                 .statusCode(HttpStatus.OK.value())                  // Mã trạng thái HTTP 200
                 .message(HttpStatus.OK.name())                      // Tên trạng thái ("OK")
-                .messSeq(HttpStatusMessage.OK.messageCode)          // Mã thông điệp định nghĩa trước
-                .messCode(HttpStatusMessage.OK.messageCode)         // Trùng với messSeq, dùng cho client xử lý
+                .messSeq(ResponseCode.OK.messageCode)          // Mã thông điệp định nghĩa trước
+                .messCode(ResponseCode.OK.messageCode)         // Trùng với messSeq, dùng cho client xử lý
                 .build();
     }
 

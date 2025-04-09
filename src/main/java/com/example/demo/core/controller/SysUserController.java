@@ -1,7 +1,7 @@
 package com.example.demo.core.controller;
 
 import com.example.demo.core.dto.model.ResponseEntityPagination;
-import com.example.demo.core.dto.request.QueryParams;
+import com.example.demo.core.dto.params.QueryParams;
 import com.example.demo.core.dto.response.SysUserDto;
 import com.example.demo.core.service.sysuser.SysUserService;
 import lombok.AccessLevel;

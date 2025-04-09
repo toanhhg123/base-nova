@@ -1,10 +1,10 @@
 package com.example.demo.core.controller;
 
 import com.example.demo.core.context.GlobalUserContextService;
-import com.example.demo.core.dto.body.SysResourceCreateDto;
+import com.example.demo.core.dto.body.SysResourceCreateDtoEntity;
 import com.example.demo.core.dto.model.ResponseEntityData;
 import com.example.demo.core.dto.model.ResponseEntityPagination;
-import com.example.demo.core.dto.request.QueryParams;
+import com.example.demo.core.dto.params.QueryParams;
 import com.example.demo.core.dto.response.SysResourceDto;
 import com.example.demo.core.service.sysresource.SysResourceService;
 import jakarta.validation.Valid;
@@ -38,14 +38,14 @@ public class SysResourceController {
 
     @PostMapping
     public ResponseEntityData<SysResourceDto> create(
-            @RequestBody @Valid SysResourceCreateDto sysResourceCreateDto) {
+            @RequestBody @Valid SysResourceCreateDtoEntity sysResourceCreateDto) {
         var data = service.createResource(sysResourceCreateDto);
         return ResponseEntityData.success(data);
     }
 
     @PatchMapping("{id}")
     public ResponseEntityData<SysResourceDto> update(
-            @RequestBody SysResourceCreateDto sysResourceCreateDto,
+            @RequestBody SysResourceCreateDtoEntity sysResourceCreateDto,
             @PathVariable UUID id) {
         var data = service.updateResource(id, sysResourceCreateDto);
         return ResponseEntityData.success(data);

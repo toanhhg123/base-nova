@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
  * Enum đại dian cho các mã trạng thái HTTP cùng với mã thông báo tương ứng.
  * Giữ nguyên mã thông báo từ phiên bản TypeScript trong khi cung cấp chức năng enum trong Java.
  */
-public enum HttpStatusMessage {
+public enum ResponseCode {
 
     // 1xx Phản hồi thông tin
     /**
@@ -142,9 +142,10 @@ public enum HttpStatusMessage {
      */
     DATA_NOT_FOUND(HttpStatus.BAD_REQUEST, "DATA.DATA_NOT_FOUND"),
 
-
-    ;
-
+    /**
+     * 400 validation error
+     */
+    VALIDATE_ERROR(HttpStatus.BAD_REQUEST, "VALIDATION.VALIDATION_ERROR");
 
 
     /**
@@ -162,10 +163,10 @@ public enum HttpStatusMessage {
     /**
      * Khởi tạo một hằng số Enum HttpStatusMessage.
      *
-     * @param statusCode        mã trạng thái HTTP
+     * @param statusCode  mã trạng thái HTTP
      * @param messageCode mã thông báo (tương ứng với phiên bản TypeScript)
      */
-    HttpStatusMessage(HttpStatus statusCode, String messageCode) {
+    ResponseCode(HttpStatus statusCode, String messageCode) {
         this.statusCode = statusCode;
         this.messageCode = messageCode;
     }
@@ -177,8 +178,8 @@ public enum HttpStatusMessage {
      * @return Enum HttpStatusMessage tương ứng
      * @throws IllegalArgumentException nếu không tìm thấy mã trạng thái phù hợp
      */
-    public static HttpStatusMessage fromCode(HttpStatus code) {
-        for (HttpStatusMessage status : values()) {
+    public static ResponseCode fromCode(HttpStatus code) {
+        for (ResponseCode status : values()) {
             if (status.statusCode.equals(code)) {
                 return status;
             }

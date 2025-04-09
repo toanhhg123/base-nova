@@ -1,6 +1,6 @@
 package com.example.demo.core.controller;
 
-import com.example.demo.core.dto.body.SysMessageRequestBodyDto;
+import com.example.demo.core.dto.body.SysMessageEntityRequestDto;
 import com.example.demo.core.dto.response.SysMessageDto;
 import com.example.demo.core.service.sysmessage.SysMessageService;
 import jakarta.validation.Valid;
@@ -13,21 +13,21 @@ import java.util.UUID;
 @RestController
 @RequestMapping("sys-message")
 public class SysMessageController {
-        private final SysMessageService sysMessageService;
+    private final SysMessageService sysMessageService;
 
-        @PostMapping
-        public UUID create(
-                        @RequestBody @Valid SysMessageRequestBodyDto sysMessageDto) {
-                return sysMessageService
-                                .create(sysMessageDto)
-                                .getId();
-        }
+    @PostMapping
+    public UUID create(
+            @RequestBody @Valid SysMessageEntityRequestDto sysMessageDto) {
+        return sysMessageService
+                .create(sysMessageDto)
+                .getId();
+    }
 
-        @GetMapping("{id}")
-        public SysMessageDto findById(
-                        @PathVariable UUID id) {
-                return sysMessageService
-                                .findById(id);
-        }
+    @GetMapping("{id}")
+    public SysMessageDto findById(
+            @PathVariable UUID id) {
+        return sysMessageService
+                .findById(id);
+    }
 
 }

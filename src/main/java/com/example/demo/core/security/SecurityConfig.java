@@ -1,6 +1,7 @@
 package com.example.demo.core.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -8,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -19,6 +22,7 @@ import java.util.List;
 /**
  * Security configuration class to define Spring Security settings.
  */
+@Slf4j
 @Configuration
 @EnableWebSecurity // Enables Spring Security for the application.
 @EnableMethodSecurity// Enables method-level security annotations like @PreAuthorize.
@@ -84,4 +88,11 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration); // Apply CORS settings to all endpoints
         return source;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }

@@ -9,4 +9,13 @@ public enum Language {
     LANG_HEADER("lang");
 
     public final String value;
+
+    public static Language fromValue(String value) {
+        for (Language lang : Language.values()) {
+            if (lang.value.equals(value)) {
+                return lang;
+            }
+        }
+        return Language.VI;
+    }
 }

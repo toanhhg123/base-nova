@@ -39,7 +39,7 @@ public class BusinessExceptionHandler {
             WebRequest request
     ) {
         // Lấy thông báo hệ thống từ cache sử dụng mã thông báo của ngoại lệ
-        SysMessage sysMessage = messageCacheService.getByMessageCode(ex.getStatusMessage());
+        SysMessage sysMessage = messageCacheService.getByMessageCode(ex.getResponseCode());
 
         // Xác định ngôn ngữ từ header request (mặc định tiếng Việt nếu không chỉ định)
         String lang = getLanguageFromRequest(request);
@@ -51,7 +51,7 @@ public class BusinessExceptionHandler {
         Response response = buildErrorResponse(ex, sysMessage, localizedMessage);
 
         return ResponseEntity
-                .status(ex.getStatusMessage().statusCode)
+                .status(ex.getResponseCode().statusCode)
                 .body(response);
     }
 
@@ -90,9 +90,9 @@ public class BusinessExceptionHandler {
     private Response buildErrorResponse(BusinessException ex, SysMessage sysMessage, String localizedMessage) {
         return Response.builder()
                 .status(ResponseStatus.ERROR)
-                .statusCode(ex.getStatusMessage().statusCode.value())
+                .statusCode(ex.getResponseCode().statusCode.value())
                 .message(localizedMessage)
-                .messCode(ex.getStatusMessage().messageCode)
+                .messCode(ex.getResponseCode().messageCode)
                 .messSeq(sysMessage.getMessageSeq())
                 .messParam(ex.getParameters())
                 .messLang(getAllTranslations(sysMessage, ex.getParameters()))

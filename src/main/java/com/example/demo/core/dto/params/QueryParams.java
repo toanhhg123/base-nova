@@ -1,4 +1,4 @@
-package com.example.demo.core.dto.request;
+package com.example.demo.core.dto.params;
 
 import lombok.AccessLevel;
 import lombok.Data;
