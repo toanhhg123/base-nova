@@ -81,7 +81,6 @@ public class ValidationExceptionHandler extends AbstractExceptionHandler {
 
         // Tạo phản hồi lỗi chuẩn hóa
         Response response = buildErrorResponse(
-                ResponseCode.VALIDATE_ERROR,
                 sysMessage,
                 localizedMessage,
                 messParam,

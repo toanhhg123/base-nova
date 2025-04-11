@@ -1,7 +1,6 @@
 package com.example.demo.core.exception.handler;
 
 import com.example.demo.core.dto.model.Response;
-import com.example.demo.core.entities.SysMessage;
 import com.example.demo.core.exception.AbstractExceptionHandler;
 import com.example.demo.core.exception.BusinessException;
 import com.example.demo.core.exception.ExceptionHandlerHelper;
@@ -43,30 +42,11 @@ public class BusinessExceptionHandler extends AbstractExceptionHandler {
             WebRequest request
     ) {
 
-        // Lấy thông báo hệ thống từ cache
-        SysMessage sysMessage = messageCacheService.getByMessageCode(ex.getResponseCode());
-
-        // Xác định ngôn ngữ từ request
-        String lang = helper.getLanguageFromRequest(request);
-
-        // Xây dựng thông báo đã được địa phương hóa
-        String localizedMessage = helper.buildLocalizedMessage(
-                sysMessage,
-                lang,
-                ex.getParameters()
-        );
-
-        // Lấy bản dịch thông báo
-        var messLang = helper.getAllTranslations(sysMessage, ex.getParameters());
-
-
         // Tạo phản hồi lỗi chuẩn hóa
         Response response = buildErrorResponse(
                 ex.getResponseCode(),
-                sysMessage,
-                localizedMessage,
-                ex.getParameters(),
-                messLang
+                request,
+                ex.getParameters()
         );
 
         return ResponseEntity
