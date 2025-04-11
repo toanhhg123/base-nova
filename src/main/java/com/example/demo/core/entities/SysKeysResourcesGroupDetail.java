@@ -4,10 +4,14 @@ import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
 @Entity
 @Table(name = "sys_keys_resources_group_details")
 public class SysKeysResourcesGroupDetail extends BaseEntity {

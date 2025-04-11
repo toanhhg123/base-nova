@@ -7,14 +7,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "sys_users")
 public class SysUser extends BaseEntity {
     @Column(name = "user_name")
@@ -48,7 +52,7 @@ public class SysUser extends BaseEntity {
     private String keycloakId;
 
     @OneToMany(mappedBy = "user")
-    private Set<SysUserRole> sysUsersRoles = new LinkedHashSet<>();
+    private List<SysUserRole> sysUsersRoles = new ArrayList<>();
 
     @Override
     public SysDatasourceNoCode getPrefixNoCode() {

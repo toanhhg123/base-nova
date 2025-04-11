@@ -6,15 +6,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "sys_keys_resources")
 public class SysKeysResource extends BaseEntity {
     @Column(name = "resource", nullable = false)
@@ -24,7 +29,8 @@ public class SysKeysResource extends BaseEntity {
     private String scope;
 
     @OneToMany(mappedBy = "resource")
-    private Set<SysKeysResourcesGroupDetail> sysKeysResourcesGroupDetails = new LinkedHashSet<>();
+    @Builder.Default
+    private List<SysKeysResourcesGroupDetail> sysKeysResourcesGroupDetails = new ArrayList<>();
 
     @Override
     public SysDatasourceNoCode getPrefixNoCode() {

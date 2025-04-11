@@ -3,7 +3,7 @@ package com.example.demo.core.dto.model;
 import com.example.demo.core.constants.ResponseStatus;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
-@EqualsAndHashCode
+@NoArgsConstructor
 @SuperBuilder
 public class Response {
     ResponseStatus status;

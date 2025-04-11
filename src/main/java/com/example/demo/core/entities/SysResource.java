@@ -6,12 +6,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "sys_resources")
 public class SysResource extends BaseEntity {
     @Column(name = "resource")

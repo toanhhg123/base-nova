@@ -16,5 +16,5 @@ public class SysClientDto extends BaseEntityDto {
     String clientId;
     String publicKey;
     String ipWhitelist;
-    Map<String, Object> allowedEndpoints;
+    transient Map<String, Object> allowedEndpoints;
 }

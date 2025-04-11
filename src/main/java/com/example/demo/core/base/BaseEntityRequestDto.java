@@ -8,13 +8,17 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode
+@SuperBuilder
+@NoArgsConstructor
 @Data
 public class BaseEntityRequestDto implements Serializable {
     @JsonIgnore

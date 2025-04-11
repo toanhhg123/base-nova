@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * DTO for {@link com.example.demo.core.entities.SysUser}
@@ -25,5 +25,5 @@ public class SysUserDto extends BaseEntityDto {
     String gender;
     String email;
     String keycloakId;
-    transient Set<SysUserRoleDto> sysUsersRoles;
+    transient List<SysUserRoleDto> sysUsersRoles;
 }

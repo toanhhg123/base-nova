@@ -4,13 +4,17 @@ import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@SuperBuilder
 @Entity
 @Table(name = "sys_users_resources")
 public class SysUserResource extends BaseEntity {

@@ -7,8 +7,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -19,7 +23,7 @@ import java.util.UUID;
  * Cung cấp các trường và chức năng chung cho tất cả thực thể.
  */
 @MappedSuperclass
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
 @Getter
 @Setter

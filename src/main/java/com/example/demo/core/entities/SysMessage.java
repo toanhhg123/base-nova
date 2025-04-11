@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -18,12 +19,13 @@ import org.hibernate.type.SqlTypes;
 import java.util.Map;
 
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "sys_message")
+@NoArgsConstructor
 public class SysMessage extends BaseEntity {
     @Column(name = "message_seq", length = Integer.MAX_VALUE)
     String messageSeq;

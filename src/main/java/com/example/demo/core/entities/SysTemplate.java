@@ -6,11 +6,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "sys_templates")
 public class SysTemplate extends BaseEntity {
     @Column(name = "\"fileName\"", nullable = false)

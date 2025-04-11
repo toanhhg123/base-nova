@@ -4,7 +4,9 @@ import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -12,6 +14,8 @@ import java.time.Instant;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "sys_users_roles")
 public class SysUserRole extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

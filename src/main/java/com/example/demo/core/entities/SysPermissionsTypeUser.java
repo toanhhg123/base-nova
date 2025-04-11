@@ -4,7 +4,9 @@ import com.example.demo.core.base.BaseEntity;
 import com.example.demo.core.constants.SysDatasourceNoCode;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -15,6 +17,8 @@ import java.util.Map;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@SuperBuilder
 @Table(name = "sys_permissions_type_users")
 public class SysPermissionsTypeUser extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
