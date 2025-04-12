@@ -27,7 +27,10 @@ public class AuthAspect {
      * Sử dụng `@within` để bắt @Auth gắn ở class,
      * và `@annotation` để bắt @Auth gắn trực tiếp ở method.
      */
-    @Before("@within(com.example.demo.core.security.annotation.Auth) || @annotation(com.example.demo.core.security.annotation.Auth)")
+    @Before("""
+                @within(com.example.demo.core.security.annotation.Auth) ||
+                @annotation(com.example.demo.core.security.annotation.Auth)
+            """)
     public void checkPermission(JoinPoint joinPoint) {
         // Lấy thông tin người dùng đang đăng nhập từ SecurityContext (chứa token đã parse)
         var authentication = SecurityContextHolder.getContext().getAuthentication();

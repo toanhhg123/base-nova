@@ -44,11 +44,19 @@ otel:
 #      endpoint: http://localhost:4317  # Địa chỉ của OTLP (OpenTelemetry Protocol) Collector
 #      protocol: grpc  # Sử dụng giao thức gRPC để gửi dữ liệu theo dõi
 
+
 logging:
+  # Định nghĩa đường dẫn thư mục chứa log files
+  file:
+    path: ./logs
+  # Cấu hình cấp độ log cho package cụ thể
   level:
-    org:
-      springframework:
-        security: debug  # Bật chế độ debug cho Spring Security để theo dõi quá trình xác thực
+    root: INFO
+    com.example.demo: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    org.hibernate.SQL: DEBUG # Hiển thị SQL
 
 app:
   jwt:
